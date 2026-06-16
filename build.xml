@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Library_Management_System" default="jar" basedir=".">
+    <property name="src.dir" value="src"/>
+    <property name="build.dir" value="build"/>
+    <property name="classes.dir" value="${build.dir}/classes"/>
+    <property name="test.src.dir" value="test"/>
+    <property name="test.classes.dir" value="${build.dir}/test/classes"/>
+    <property name="dist.dir" value="dist"/>
+    <property name="dist.jar" value="${dist.dir}/Library_Management_System.jar"/>
+    <property name="main.class" value="LMS.Main"/>
+    <property name="ui.class" value="LMS.AppDashboard"/>
+    <property name="test.class" value="LMS.DomainSmokeTest"/>
+
+    <path id="project.classpath">
+        <fileset dir="libs" includes="*.jar"/>
+    </path>
+
+    <target name="clean">
+        <delete dir="${build.dir}"/>
+        <delete dir="${dist.dir}"/>
+    </target>
+
+    <target name="compile">
+        <mkdir dir="${classes.dir}"/>
+        <javac srcdir="${src.dir}"
+               destdir="${classes.dir}"
+               source="1.8"
+               target="1.8"
+               encoding="UTF-8"
+               includeantruntime="false">
+            <classpath refid="project.classpath"/>
+        </javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <mkdir dir="${dist.dir}"/>
+        <jar destfile="${dist.jar}" basedir="${classes.dir}" manifest="manifest.mf">
+            <manifest>
+                <attribute name="Main-Class" value="${main.class}"/>
+                <attribute name="Class-Path" value="libs/mysql-connector-j-9.7.0.jar"/>
+            </manifest>
+        </jar>
+    </target>
+
+    <target name="compile-test" depends="compile">
+        <mkdir dir="${test.classes.dir}"/>
+        <javac srcdir="${test.src.dir}"
+               destdir="${test.classes.dir}"
+               source="1.8"
+               target="1.8"
+               encoding="UTF-8"
+               includeantruntime="false">
+            <classpath>
+                <pathelement path="${classes.dir}"/>
+                <path refid="project.classpath"/>
+            </classpath>
+        </javac>
+    </target>
+
+    <target name="test" depends="compile-test">
+        <java classname="${test.class}" fork="true" failonerror="true">
+            <classpath>
+                <pathelement path="${classes.dir}"/>
+                <pathelement path="${test.classes.dir}"/>
+                <path refid="project.classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="run" depends="compile">
+        <java classname="${main.class}" fork="true">
+            <classpath>
+                <pathelement path="${classes.dir}"/>
+                <path refid="project.classpath"/>
+            </classpath>
+        </java>
+    </target>
+
+    <target name="run-ui" depends="compile">
+        <java classname="${ui.class}" fork="true">
+            <classpath>
+                <pathelement path="${classes.dir}"/>
+                <path refid="project.classpath"/>
+            </classpath>
+        </java>
+    </target>
+</project>

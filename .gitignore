@@ -1,0 +1,28 @@
+# Java build output
+build/
+dist/
+classes/
+out/
+target/
+*.class
+
+# IDE files
+.idea/
+.vscode/
+nbproject/private/
+.netbeans_automatic_build
+.netbeans_update_resources
+
+# Logs
+logs/
+*.log
+
+# Temporary and OS files
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
