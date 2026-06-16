@@ -1,231 +1,126 @@
-# Library Management System (Java + MySQL)
+# Library Management System
 
-## Overview
-
-Library Management System is a Java-based desktop application that helps manage books, borrowers, librarians, clerks, loans, and hold requests. The project uses JDBC to connect with a MySQL database and follows object-oriented programming principles.
-
----
+A Java Library Management System that demonstrates object-oriented design, JDBC persistence, and MySQL-backed data storage. The original console workflow is preserved, and an optional Swing dashboard supports login, book search, and book-management actions.
 
 ## Features
 
-### User Management
+- Login flow for borrowers, clerks, librarians, and administrators
+- Add clerks, librarians, and borrowers
+- Add, search, update, issue, renew, return, and remove books
+- Track issued-book history and fine status
+- Place and manage hold requests
+- Persist library records in MySQL using JDBC
+- Optional Swing dashboard for login, search, add, update, remove, and view books
 
-* Librarian management
-* Clerk management
-* Borrower management
-* User authentication and login
+## Technologies
 
-### Book Management
-
-* Add new books
-* Remove books
-* View all books
-* Search books by:
-
-  * Title
-  * Author
-  * Subject
-
-### Loan Management
-
-* Issue books
-* Return books
-* Loan history tracking
-* Fine calculation for overdue books
-
-### Hold Requests
-
-* Place hold requests on books
-* Manage hold requests
-* Automatic hold request expiration support
-
-### Database Integration
-
-* Persistent storage using MySQL
-* Load data from database on startup
-* Save changes back to database
-
----
-
-## Technologies Used
-
-* Java SE
-* JDBC (Java Database Connectivity)
-* MySQL
-* Apache Ant
-* VS Code / NetBeans
-* Object-Oriented Programming (OOP)
-
----
-
-## Project Structure
-
-```text
-src/
- └── LMS/
-      ├── Library.java
-      ├── Book.java
-      ├── Borrower.java
-      ├── Clerk.java
-      ├── Librarian.java
-      ├── Loan.java
-      ├── HoldRequest.java
-      ├── Main.java
-
-test/
- └── LMS/
-      └── DomainSmokeTest.java
-
-config/
-docs/
-images/
-libs/
-```
-
----
+- Java
+- JDBC
+- MySQL
+- Object-Oriented Programming
+- Apache Ant
 
 ## Database Setup
 
-### Create Database
-
-```sql
-CREATE DATABASE lms;
-USE lms;
-```
-
-### Create Tables
-
-Run the provided SQL schema script to create:
-
-* PERSON
-* BOOK
-* STAFF
-* CLERK
-* LIBRARIAN
-* BORROWER
-* BORROWED_BOOK
-* LOAN
-* ON_HOLD_BOOK
-
-### Configure Database
-
-Update the database configuration file:
-
-```properties
-db.url=jdbc:mysql://localhost:3306/lms
-db.user=root
-db.password=YOUR_PASSWORD
-```
-
----
-
-## Setup Instructions
-
-### Prerequisites
-
-* Java 8 or later
-* MySQL Server
-* MySQL Connector/J
-* Apache Ant
-
-### Clone Repository
+1. Install MySQL and create a local user with permission to create and update the `lms` database.
+2. Run the schema script:
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/Library-Management-System-JAVA.git
-cd Library-Management-System-JAVA
+mysql -u root -p < docs/Database-Schema.sql
 ```
 
-### Add MySQL Connector
+3. Optional: load demo records for a portfolio walkthrough:
 
-Place:
+```bash
+mysql -u root -p < docs/Seed-Data.sql
+```
+
+4. Update `config/database.properties` or set environment variables if your local MySQL credentials differ from the defaults.
+5. Start MySQL before running the application.
+
+The application currently connects to:
 
 ```text
-mysql-connector-j-9.7.0.jar
+jdbc:mysql://localhost:3306/lms
+user: root
 ```
 
-inside:
+Supported environment variables:
 
 ```text
-libs/
+LMS_DB_URL
+LMS_DB_USER
+LMS_DB_PASSWORD
 ```
-
----
 
 ## How to Run
 
-### Using Ant
-
-Compile:
-
-```bash
-ant compile
-```
-
-Run:
+Compile and run with Ant:
 
 ```bash
 ant run
 ```
 
-### Using VS Code
+Run the Swing dashboard:
 
-1. Open project folder.
-2. Add MySQL Connector JAR to Referenced Libraries.
-3. Run `Main.java`.
+```bash
+ant run-ui
+```
 
----
+Build the jar:
+
+```bash
+ant clean jar
+```
+
+Run the domain smoke test:
+
+```bash
+ant test
+```
+
+The jar is generated at `dist/Library_Management_System.jar`.
+
+The administrative password in the console application is `lib`.
 
 ## Screenshots
 
-### Login Screen
+### Main Menu
 
-Add screenshot here:
+![Main menu](images/main-menu.png)
 
-```text
-images/login.png
-```
+### Librarian Dashboard
 
-### Dashboard
-
-Add screenshot here:
-
-```text
-images/dashboard.png
-```
+![Librarian dashboard](images/librarian-dashboard.png)
 
 ### Book Management
 
-Add screenshot here:
+![Book management](images/book-management.png)
+
+### Class Diagram
+
+![Class diagram](images/class-diagram.png)
+
+## Project Structure
 
 ```text
-images/books.png
+Library-Management-System/
+|-- src/                  # Java source code
+|-- docs/                 # Database schema and class diagram documentation
+|-- images/               # Curated screenshots and diagrams
+|-- libs/                 # Third-party JDBC libraries
+|-- config/               # Local database configuration
+|-- test/                 # Lightweight domain smoke tests
+|-- README.md             # Project overview and setup guide
+|-- LICENSE               # MIT license
+|-- build.xml             # Portable Ant build script
+|-- manifest.mf           # Jar manifest
+`-- .gitignore            # Git ignore rules for local/generated files
 ```
 
-### Database Schema
+## Portfolio Notes
 
-Add screenshot here:
-
-```text
-images/database-schema.png
-```
-
----
-
-## Future Improvements
-
-* JavaFX GUI
-* Spring Boot REST API
-* Role-based access controlgit add README.md
-git commit -m "Improve README documentation"
-git push
-* Email notifications
-* Online reservation system
-* Report generation
-
----
-
-## Author
-
-Pavan Kumar
-
-GitHub: https://github.com/vvspavankumar
+- Database credentials are configurable through `config/database.properties` or environment variables.
+- `docs/Seed-Data.sql` provides demo data for walkthroughs.
+- `ant test` runs a lightweight domain smoke test.
+- `ant run-ui` launches a Swing dashboard with login, book search, and book-management actions.
